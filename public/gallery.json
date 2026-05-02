@@ -6,9 +6,43 @@
       "createdAt": 1714560000000
     }
   ],
-  "groups": [],
-  "images": [],
+  "groups": [
+    {
+      "id": "kyoto",
+      "countryId": "japan",
+      "name": "Kyoto",
+      "createdAt": 1714560001000
+    }
+  ],
+  "images": [
+    { "id": "img_R0003046", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003046.JPG", "name": "R0003046", "note": "", "createdAt": 1714560001001 },
+    { "id": "img_R0003055", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003055.JPG", "name": "R0003055", "note": "", "createdAt": 1714560001002 },
+    { "id": "img_R0003060", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003060.JPG", "name": "R0003060", "note": "", "createdAt": 1714560001003 },
+    { "id": "img_R0003062", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003062.JPG", "name": "R0003062", "note": "", "createdAt": 1714560001004 },
+    { "id": "img_R0003063", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003063.JPG", "name": "R0003063", "note": "", "createdAt": 1714560001005 },
+    { "id": "img_R0003066", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003066.JPG", "name": "R0003066", "note": "", "createdAt": 1714560001006 },
+    { "id": "img_R0003067", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003067.JPG", "name": "R0003067", "note": "", "createdAt": 1714560001007 },
+    { "id": "img_R0003073", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003073.JPG", "name": "R0003073", "note": "", "createdAt": 1714560001008 },
+    { "id": "img_R0003074", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003074.JPG", "name": "R0003074", "note": "", "createdAt": 1714560001009 },
+    { "id": "img_R0003078", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003078.JPG", "name": "R0003078", "note": "", "createdAt": 1714560001010 },
+    { "id": "img_R0003079", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003079.JPG", "name": "R0003079", "note": "", "createdAt": 1714560001011 },
+    { "id": "img_R0003080", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003080.JPG", "name": "R0003080", "note": "", "createdAt": 1714560001012 },
+    { "id": "img_R0003081", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003081.JPG", "name": "R0003081", "note": "", "createdAt": 1714560001013 },
+    { "id": "img_R0003083", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003083.JPG", "name": "R0003083", "note": "", "createdAt": 1714560001014 },
+    { "id": "img_R0003085", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003085.JPG", "name": "R0003085", "note": "", "createdAt": 1714560001015 },
+    { "id": "img_R0003086", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003086.JPG", "name": "R0003086", "note": "", "createdAt": 1714560001016 },
+    { "id": "img_R0003088", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003088.JPG", "name": "R0003088", "note": "", "createdAt": 1714560001017 },
+    { "id": "img_R0003091", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003091.JPG", "name": "R0003091", "note": "", "createdAt": 1714560001018 },
+    { "id": "img_R0003095", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003095.JPG", "name": "R0003095", "note": "", "createdAt": 1714560001019 },
+    { "id": "img_R0003097", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003097.JPG", "name": "R0003097", "note": "", "createdAt": 1714560001020 },
+    { "id": "img_R0003098", "countryId": "japan", "groupId": "kyoto", "url": "gallery/japan/R0003098.JPG", "name": "R0003098", "note": "", "createdAt": 1714560001021 }
+  ],
   "settings": {
-    "site_background": null
+    "site_background": {
+      "url": "bg.jpg",
+      "opacity": 0.6,
+      "blur": 0,
+      "position": "50% 50%"
+    }
   }
 }

@@ -6,6 +6,7 @@ export default function BackgroundManager({ refreshTrigger }) {
   const [bgUrl, setBgUrl] = useState(null);
   const [scrollY, setScrollY] = useState(0);
 
+  // Handle Parallax Scrolling
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
@@ -22,8 +23,12 @@ export default function BackgroundManager({ refreshTrigger }) {
       setBgSettings(settings);
 
       if (settings?.file) {
+        // Local file object (from SettingsModal upload)
         currentUrl = URL.createObjectURL(settings.file);
         setBgUrl(currentUrl);
+      } else if (settings?.url) {
+        // Static URL from gallery.json (e.g. "bg.jpg")
+        setBgUrl(`${import.meta.env.BASE_URL}${settings.url}`);
       } else {
         setBgUrl(null);
       }
@@ -40,6 +45,7 @@ export default function BackgroundManager({ refreshTrigger }) {
 
   if (!bgSettings || !bgUrl) return null;
 
+  // Extract base Y from position string (e.g., "50% 50%")
   let posY = "50%";
   if (bgSettings.position && typeof bgSettings.position === 'string') {
     const parts = bgSettings.position.split(' ');
@@ -48,6 +54,7 @@ export default function BackgroundManager({ refreshTrigger }) {
     }
   }
 
+  // Parallax calculation: Move background at 30% the speed of normal scrolling
   const parallaxPositionY = `calc(${posY} - ${scrollY * 0.3}px)`;
 
   return (
