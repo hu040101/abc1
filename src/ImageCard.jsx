@@ -1,45 +1,46 @@
 import { useState } from 'react';
+import NoteModal from './NoteModal';
 import { IS_VIEWER } from './config';
 
-export default function ImageCard({ image, country, groups, onDelete, onUpdate, onImageClick, isSelectMode, isSelected, onToggleSelect }) {
-  const [showNote, setShowNote] = useState(false);
-
-  const handleGroupChange = (e) => {
-    onUpdate(image, { groupId: e.target.value === "" ? null : e.target.value });
-  };
-
-  const handleNoteChange = (e) => {
-    onUpdate(image, { note: e.target.value });
-  };
+export default function ImageCard({ 
+  image, country, groups, 
+  onDelete, onUpdate, onImageClick,
+  isSelectMode, isSelected, onToggleSelect
+}) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const categoryName = groups.find(g => g.id === image.groupId)?.name;
 
   return (
-    <div className={`image-card glass-panel ${isSelected ? 'selected' : ''}`} onClick={() => isSelectMode ? onToggleSelect(image.id) : onImageClick(image)}>
-      {isSelectMode && (
-        <div className="select-indicator">
-          {isSelected ? '✓' : ''}
-        </div>
-      )}
-      
-      <div className="image-wrapper">
-        <img src={image.url} alt={image.name} loading="lazy" />
-      </div>
-      
-      <div className="image-info">
-        <h3>{image.name}</h3>
-        {image.note && <p className="image-note">{image.note}</p>}
+    <>
+      <div 
+        className={`image-card ${isSelectMode ? 'selectable' : ''} ${isSelected ? 'selected' : ''}`}
+        onClick={() => { if (isSelectMode) { onToggleSelect(image.id); } else { onImageClick(image); } }}
+      >
+        <img src={image.url} alt={image.name} loading="lazy" style={{ cursor: isSelectMode ? 'pointer' : 'zoom-in' }} />
         
-        {!IS_VIEWER && !isSelectMode && (
-          <div className="image-actions" onClick={(e) => e.stopPropagation()}>
-            <select value={image.groupId || ""} onChange={handleGroupChange}>
-              <option value="">未分类</option>
-              {groups.map(g => (
-                <option key={g.id} value={g.id}>{g.name}</option>
-              ))}
-            </select>
-            <button className="delete-btn" onClick={() => onDelete(image)}>删除</button>
+        {categoryName && (
+          <div style={{ position: 'absolute', top: '10px', right: '10px', background: 'var(--accent-color)', color: 'white', padding: '4px 10px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: '600', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>
+            {categoryName}
+          </div>
+        )}
+
+        {!isSelectMode && (
+          <div className="image-overlay">
+            <button className="note-btn" onClick={(e) => { e.stopPropagation(); setIsModalOpen(true); }}>
+              {IS_VIEWER ? '\u67e5\u770b\u8be6\u60c5' : 'Edit Details'}
+            </button>
+            {!IS_VIEWER && (
+              <button className="delete-btn" style={{ background: 'rgba(0,0,0,0.5)', color: 'white', marginLeft: 'auto' }} onClick={(e) => { e.stopPropagation(); onDelete(image); }}>
+                Delete
+              </button>
+            )}
           </div>
         )}
       </div>
-    </div>
+
+      <NoteModal isOpen={isModalOpen} initialNote={image.note} initialGroupId={image.groupId} groups={groups} onClose={() => setIsModalOpen(false)}
+        onSave={(updates) => { if (!IS_VIEWER) { onUpdate(image, updates); } setIsModalOpen(false); }}
+      />
+    </>
   );
 }
