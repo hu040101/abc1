@@ -47,7 +47,7 @@ export default function CountryManager({ countries, activeCountryId, onSelect, l
       top: rect.top,
       left: rect.right + 10,
       countryId
-0    });
+    });
   };
 
   const handleDelete = async (id) => {
