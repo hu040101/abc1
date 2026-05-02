@@ -2,36 +2,72 @@ import { useState, useEffect } from 'react';
 import { getBackgroundSettings } from './store';
 
 export default function BackgroundManager({ refreshTrigger }) {
-  const [bg, setBg] = useState(null);
+  const [bgSettings, setBgSettings] = useState(null);
+  const [bgUrl, setBgUrl] = useState(null);
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    async function loadBg() {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    let currentUrl = null;
+
+    const loadBg = async () => {
       const settings = await getBackgroundSettings();
-      if (settings) {
-        setBg(settings);
+      setBgSettings(settings);
+
+      if (settings?.file) {
+        currentUrl = URL.createObjectURL(settings.file);
+        setBgUrl(currentUrl);
+      } else {
+        setBgUrl(null);
       }
-    }
+    };
+
     loadBg();
+
+    return () => {
+      if (currentUrl) {
+        URL.revokeObjectURL(currentUrl);
+      }
+    };
   }, [refreshTrigger]);
 
-  useEffect(() => {
-    if (bg) {
-      if (bg.type === 'color') {
-        document.body.style.background = bg.value;
-        document.body.style.backgroundImage = 'none';
-      } else if (bg.type === 'gradient') {
-        document.body.style.backgroundImage = bg.value;
-      } else if (bg.type === 'image') {
-        document.body.style.backgroundImage = `url(${bg.value})`;
-        document.body.style.backgroundSize = 'cover';
-        document.body.style.backgroundPosition = 'center';
-        document.body.style.backgroundAttachment = 'fixed';
-      }
-    } else {
-      // Default elegant gradient
-      document.body.style.backgroundImage = 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)';
-    }
-  }, [bg]);
+  if (!bgSettings || !bgUrl) return null;
 
-  return null;
+  let posY = "50%";
+  if (bgSettings.position && typeof bgSettings.position === 'string') {
+    const parts = bgSettings.position.split(' ');
+    if (parts.length === 2) {
+      posY = parts[1];
+    }
+  }
+
+  const parallaxPositionY = `calc(${posY} - ${scrollY * 0.3}px)`;
+
+  return (
+    <div 
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: -1, 
+        backgroundImage: `url(${bgUrl})`,
+        backgroundSize: '100vw auto',
+        backgroundPosition: `center ${parallaxPositionY}`,
+        backgroundRepeat: 'no-repeat',
+        opacity: bgSettings.opacity !== undefined ? bgSettings.opacity : 1,
+        filter: `blur(${bgSettings.blur || 0}px)`,
+        transform: bgSettings.blur ? 'scale(1.05)' : 'none', 
+        transition: 'opacity 0.3s ease-out, filter 0.3s ease-out' 
+      }}
+    />
+  );
 }
