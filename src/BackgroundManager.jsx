@@ -55,6 +55,7 @@ export default function BackgroundManager({ refreshTrigger }) {
   }
 
   // Parallax calculation: Move background at 30% the speed of normal scrolling
+  // At scrollY = 0, this is exactly the preset posY
   const parallaxPositionY = `calc(${posY} - ${scrollY * 0.3}px)`;
 
   return (
@@ -67,7 +68,9 @@ export default function BackgroundManager({ refreshTrigger }) {
         bottom: 0,
         zIndex: -1, 
         backgroundImage: `url(${bgUrl})`,
+        // Force width to 100vw, height to auto (maintains aspect ratio)
         backgroundSize: '100vw auto',
+        // Center horizontally, use user preset + parallax vertically
         backgroundPosition: `center ${parallaxPositionY}`,
         backgroundRepeat: 'no-repeat',
         opacity: bgSettings.opacity !== undefined ? bgSettings.opacity : 1,

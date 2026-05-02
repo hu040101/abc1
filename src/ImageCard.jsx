@@ -8,29 +8,63 @@ export default function ImageCard({
   isSelectMode, isSelected, onToggleSelect
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Find category name for badge
   const categoryName = groups.find(g => g.id === image.groupId)?.name;
 
   return (
     <>
       <div 
         className={`image-card ${isSelectMode ? 'selectable' : ''} ${isSelected ? 'selected' : ''}`}
-        onClick={() => { if (isSelectMode) { onToggleSelect(image.id); } else { onImageClick(image); } }}
+        onClick={() => {
+          if (isSelectMode) {
+            onToggleSelect(image.id);
+          } else {
+            onImageClick(image);
+          }
+        }}
       >
-        <img src={image.url} alt={image.name} loading="lazy" style={{ cursor: isSelectMode ? 'pointer' : 'zoom-in' }} />
+        <img 
+          src={image.url} 
+          alt={image.name} 
+          loading="lazy" 
+          style={{ cursor: isSelectMode ? 'pointer' : 'zoom-in' }}
+        />
         
+        {/* Category Badge */}
         {categoryName && (
-          <div style={{ position: 'absolute', top: '10px', right: '10px', background: 'var(--accent-color)', color: 'white', padding: '4px 10px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: '600', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>
+          <div style={{
+            position: 'absolute',
+            top: '10px',
+            right: '10px',
+            background: 'var(--accent-color)',
+            color: 'white',
+            padding: '4px 10px',
+            borderRadius: '12px',
+            fontSize: '0.8rem',
+            fontWeight: '600',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+          }}>
             {categoryName}
           </div>
         )}
 
+        {/* Hide overlay buttons in select mode to prevent accidental clicks */}
         {!isSelectMode && (
           <div className="image-overlay">
-            <button className="note-btn" onClick={(e) => { e.stopPropagation(); setIsModalOpen(true); }}>
-              {IS_VIEWER ? '\u67e5\u770b\u8be6\u60c5' : 'Edit Details'}
+            <button 
+              className="note-btn" 
+              onClick={(e) => { e.stopPropagation(); setIsModalOpen(true); }}
+            >
+              {IS_VIEWER ? '查看详情' : 'Edit Details'}
             </button>
+
             {!IS_VIEWER && (
-              <button className="delete-btn" style={{ background: 'rgba(0,0,0,0.5)', color: 'white', marginLeft: 'auto' }} onClick={(e) => { e.stopPropagation(); onDelete(image); }}>
+              <button 
+                className="delete-btn" 
+                style={{ background: 'rgba(0,0,0,0.5)', color: 'white', marginLeft: 'auto' }}
+                onClick={(e) => { e.stopPropagation(); onDelete(image); }}
+              >
                 Delete
               </button>
             )}
@@ -38,9 +72,20 @@ export default function ImageCard({
         )}
       </div>
 
-      <NoteModal isOpen={isModalOpen} initialNote={image.note} initialGroupId={image.groupId} groups={groups} onClose={() => setIsModalOpen(false)}
-        onSave={(updates) => { if (!IS_VIEWER) { onUpdate(image, updates); } setIsModalOpen(false); }}
+      <NoteModal 
+        isOpen={isModalOpen} 
+        initialNote={image.note} 
+        initialGroupId={image.groupId}
+        groups={groups}
+        onClose={() => setIsModalOpen(false)}
+        onSave={(updates) => {
+          if (!IS_VIEWER) {
+            onUpdate(image, updates);
+          }
+          setIsModalOpen(false);
+        }}
       />
     </>
   );
 }
+

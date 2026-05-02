@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { getBackgroundSettings, saveBackgroundSettings } from './store';
 
 export default function SettingsModal({ isOpen, onClose, onSettingsChanged }) {
@@ -54,7 +54,7 @@ export default function SettingsModal({ isOpen, onClose, onSettingsChanged }) {
       file,
       opacity,
       blur,
-      position: `${position.x}% ${position.y}%`
+      position: `${position.x}% ${position.y}%` // Scale is implicitly 100vw auto now
     });
     if (onSettingsChanged) onSettingsChanged();
     onClose();
@@ -79,8 +79,13 @@ export default function SettingsModal({ isOpen, onClose, onSettingsChanged }) {
 
   const handleMouseMove = (e) => {
     if (!isDragging.current) return;
+    
+    // We only care about Y delta since width is 100% and X drag does nothing
     const dy = e.clientY - dragStartPos.current.y;
+    
+    // Convert pixel drag to percentage roughly.
     const newY = Math.max(0, Math.min(100, bgStartPos.current.y - (dy * 0.5)));
+    
     setPosition({ x: 50, y: newY });
   };
 
@@ -127,7 +132,7 @@ export default function SettingsModal({ isOpen, onClose, onSettingsChanged }) {
                 height: '180px',
                 borderRadius: '8px',
                 overflow: 'hidden',
-                cursor: 'ns-resize',
+                cursor: 'ns-resize', // Vertical resize cursor indicates vertical drag
                 border: '1px solid rgba(0,0,0,0.1)',
                 background: `linear-gradient(-45deg, #fdfbf7, #f2e9dc, #e8dcc4, #f4eee0)`
               }}
@@ -136,8 +141,8 @@ export default function SettingsModal({ isOpen, onClose, onSettingsChanged }) {
                 position: 'absolute',
                 top: 0, left: 0, right: 0, bottom: 0,
                 backgroundImage: `url(${previewUrl})`,
-                backgroundSize: '100% auto',
-                backgroundPosition: `center ${position.y}%`,
+                backgroundSize: '100% auto', // Width fills container, height maintains aspect ratio
+                backgroundPosition: `center ${position.y}%`, // X is always center
                 backgroundRepeat: 'no-repeat',
                 opacity: opacity,
                 filter: `blur(${blur}px)`,

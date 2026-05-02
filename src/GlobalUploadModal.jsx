@@ -14,6 +14,7 @@ export default function GlobalUploadModal({ isOpen, onClose, countries, onUpload
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  // Fetch groups when a valid existing country is selected
   useEffect(() => {
     if (selectedCountryId && selectedCountryId !== 'new') {
       getGroups(selectedCountryId).then(setGroups);
@@ -45,28 +46,33 @@ export default function GlobalUploadModal({ isOpen, onClose, countries, onUpload
       let targetCountryId = selectedCountryId;
       let targetGroupId = selectedGroupId;
 
+      // Create new country if requested
       if (selectedCountryId === 'new') {
         const newCountry = await addCountry(newCountryName.trim());
         targetCountryId = newCountry.id;
       }
 
+      // Create new group if requested
       if (selectedGroupId === 'new') {
         const newGroup = await addGroup(targetCountryId, newGroupName.trim());
         targetGroupId = newGroup.id;
       }
 
+      // Process and upload all files
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         await addImage(targetCountryId, targetGroupId || null, file);
         setProgress(Math.round(((i + 1) / files.length) * 100));
       }
 
+      // Reset form
       setFiles([]);
       setSelectedCountryId('');
       setNewCountryName('');
       setSelectedGroupId('');
       setNewGroupName('');
       
+      // Notify parent to refresh
       onUploadComplete(targetCountryId);
       onClose();
 
@@ -86,6 +92,7 @@ export default function GlobalUploadModal({ isOpen, onClose, countries, onUpload
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           
+          {/* File Selection */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <label className="setting-label">选择图片 ({files.length} 张)</label>
             <input 
@@ -98,6 +105,7 @@ export default function GlobalUploadModal({ isOpen, onClose, countries, onUpload
             />
           </div>
 
+          {/* Region Selection */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <label className="setting-label">目标地区</label>
             <select 
@@ -125,6 +133,7 @@ export default function GlobalUploadModal({ isOpen, onClose, countries, onUpload
             )}
           </div>
 
+          {/* Category Selection */}
           {selectedCountryId && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <label className="setting-label">目标分类 (可选)</label>
@@ -154,6 +163,7 @@ export default function GlobalUploadModal({ isOpen, onClose, countries, onUpload
             </div>
           )}
 
+          {/* Upload Status & Submit */}
           <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'flex-end', gap: '1rem', alignItems: 'center' }}>
             {uploading && <span style={{ fontSize: '0.9rem', color: '#666' }}>上传中: {progress}%</span>}
             <button 

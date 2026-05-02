@@ -3,13 +3,13 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  // Use environment variables for safety
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID
+  projectId: "countrygallery-350a1",
+  appId: "1:933442211244:web:4a63109f118943e9e33e09",
+  storageBucket: "countrygallery-350a1.firebasestorage.app",
+  apiKey: "AIzaSyBNL9hUHHxNfjWnJKAY-sJlq-SfxLmdaTA",
+  authDomain: "countrygallery-350a1.firebaseapp.com",
+  messagingSenderId: "933442211244",
+  measurementId: "G-PLRWG82K12"
 };
 
 const app = initializeApp(firebaseConfig);
